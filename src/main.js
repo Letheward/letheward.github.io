@@ -137,6 +137,46 @@ function handleInput() {
     draw();
 }
 
+// === Audio ===
+
+// create web audio api context
+let actx = new AudioContext;
+
+// create Oscillator node
+let osc = actx.createOscillator();
+let gainNode = actx.createGain();
+
+// osc.type = "triangle";
+osc.connect(gainNode);
+gainNode.connect(actx.destination);
+gainNode.gain.setValueAtTime(0, actx.currentTime);
+osc.start();
+
+function playNote(p, t0, t1) {
+    osc.detune.setValueAtTime((p - 9) * 100, actx.currentTime + t0);
+    gainNode.gain.setValueAtTime(0.5, actx.currentTime + t0);
+    gainNode.gain.setValueAtTime(0, actx.currentTime + t1);
+}
+
+function play(speed) {
+    let octave = 0;
+    if (speed) {
+        for (i = 0; i < notes.length; i++) { 
+            if (!(notes[i] > notes[i - 1] || i === 0)) {
+                octave += 1;
+            }
+            playNote(notes[i] + octave * 12, i / speed, (i + 1) / speed);
+        }
+    } else {
+        for (i = 0; i < notes.length; i++) { 
+            if (!(notes[i] > notes[i - 1] || i === 0)) {
+                octave += 1;
+            }
+            playNote(notes[i] + octave * 12, i, i + 1);
+        }
+    }
+}
+
 // === Functions ===
 
 // Write notes to input with whitespace
@@ -184,6 +224,12 @@ function transposeSet(x) {
 // Use first note in set as root
 function toRoot() {
     transposeSet(- notes[0]);
+}
+
+// Shift index of all by to given amount
+function shiftIndex(x) {
+    transposeSet(- notes[x]);
+    sortSet();
 }
 
 // === Main ===
