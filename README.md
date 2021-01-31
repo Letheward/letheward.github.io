@@ -94,24 +94,51 @@ Here are these functions:
 
 - `shiftIndex(x)`:
 
-    Shift all notes in set by to given index amount `x` (positive integer).
+    Shift all notes in set by given index amount `x` (integer).
 
-    However this will also apply `sort()` for `0` to have index `0`.  
-    So if set values are not in ascending order, this will broke that.
+    Examples:
+    
+    - Type in console:  
+        `shiftIndex(1)` 
+    
+        Effect:  
+        `0 2 4 5 7 9 11` => `2 4 5 7 9 11 0`
 
-    This is useful to calculate modes of a scale.
+    - Type in console:  
+        `shiftIndex(-1)` 
+    
+        Effect:  
+        `0 2 4 5 7 9 11` => `11 0 2 4 5 7 9`
+
+- `jumpIndex(x)`:
+
+    Index transform using jump interval (not in musical meaning) `x` (positive integer).
 
     Example:
     
     - Type in console:  
-        `shiftIndex(1)` 
+        `jumpIndex(2)` 
+    
+        Effect:  
+        `0 2 4 6 7 9 11` => `0 4 7 11 2 6 9`
+
+- `toIndex(x)`:
+
+    Use note at index `x` (integer) as `0`.
+
+    Example:
+    
+    - Type in console:  
+        `toIndex(1)` 
     
         Effect:  
         `0 2 4 5 7 9 11` => `0 2 3 5 7 9 10`
 
 ## Status
 
-Under heavy development.
+Still really early. This is enough for my personal use, so I will update only when I feel like it.
+
+PRs and issues are welcome, though.
 
 ## License
 

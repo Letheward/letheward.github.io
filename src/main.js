@@ -208,10 +208,9 @@ function sortSet() {
 // Transpose by given amount
 function transposeSet(x) {
 
-    // int check for safety, maybe don't need this later
+    // int check for safety
     if (Number.isInteger(x)) {
 
-        // the real function
         for (i = 0; i < notes.length; i++) {
             notes[i] = ((notes[i] + x) % 12 + 12) % 12;
         }
@@ -228,8 +227,44 @@ function toRoot() {
 
 // Shift index of all by to given amount
 function shiftIndex(x) {
-    transposeSet(- notes[x]);
-    sortSet();
+
+    // ES6 is weird...
+    let [... buffer] = notes;
+
+    // int check for safety
+    if (Number.isInteger(x)) {
+
+        for (i = 0; i < buffer.length; i++) {
+            notes[i] = buffer[(((i + x) % buffer.length) + buffer.length) % buffer.length];
+        }
+    }
+
+    draw();
+    writeInput();
+}
+
+// Index transform using jump interval (not in musical meaning) x
+function jumpIndex(x) {
+
+    // ES6 is weird...
+    let [... buffer] = notes;
+
+    // int check for safety
+    if (Number.isInteger(x) && x !== 0) {
+
+        for (i = 0; i < buffer.length; i++) {
+            notes[i] = buffer[(((i * x) % buffer.length) + buffer.length) % buffer.length];
+        }
+    }
+
+    draw();
+    writeInput();
+}
+
+// Use index x as root
+function toIndex(x) {
+    shiftIndex(x);
+    toRoot();
 }
 
 // === Main ===
